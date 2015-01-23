@@ -91,3 +91,16 @@
 (rec-vs-iter 3)
 (rec-vs-iter 4)
 (rec-vs-iter 16)
+
+;;; Excercise 1.12
+;;; Pascals triangle, recursive
+
+(define (pascal row column)
+  (if (or (= column 0) (= column row))
+    1
+    (+ (pascal (- row 1) (- column 1)) (pascal (- row 1) column))))
+
+(assert 1 (pascal 0 0))
+(assert 1 (pascal 1 1))
+(assert 2 (pascal 2 1))
+(assert 6 (pascal 4 2))
