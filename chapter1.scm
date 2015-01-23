@@ -1,3 +1,7 @@
+(define (assert a b) (if (= a b) "Test Passed" "Test Failed") ) ;;; Helpful util method :)
+
+
+
 ;;; Excercise 1.3
 ;;; Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
 
@@ -9,9 +13,11 @@
     ((and (> a b) (> c b)) (sum-of-squares a c))
     (else (sum-of-squares b c))))
 
-(if (= 25 (f 1 3 4)) "Test Passed" "Test failed")
-(if (= 25 (f 3 1 4)) "Test Passed" "Test failed")
-(if (= 25 (f 4 3 1)) "Test Passed" "Test failed")
+(assert 25 (f 1 3 4))
+(assert 25 (f 3 1 4))
+(assert 25 (f 4 3 1))
+
+
 
 ;;; Excercise 1.7
 ;;; Design a square root procedure that stops when the percentage
@@ -25,7 +31,10 @@
     (exact->inexact guess)
     (sqrt number (improve number guess))))
 
-(sqrt 9 1)
+(assert 3 (round (sqrt 9 1)))
+(assert 4 (round (sqrt 16 1)))
+
+
 
 ;;; Excercise 1.8
 ;;; Design a similar program for cube roots: given formula (number / guess^2 + 2guess) / 3
@@ -43,6 +52,42 @@
   (define result-abs (cbrt-abs (abs number) (abs guess)))
   (if (> 0 number) (* -1 result-abs) result-abs))
 
-(cbrt 8 1)
-(cbrt 16 1)
-(cbrt -16 1)
+(assert 2 (round (cbrt 8 1)))
+(assert 3 (round (cbrt 16 1)))
+(assert -3 (round (cbrt -16 1)))
+
+
+
+;;; Excercise 1.11
+;;; Program both a recursive and iterative solution to the following equation
+;;; If n < 3 ? n : f(n - 1) + 2*f(n - 2) + 3*f(n - 3)
+
+(define (recursive n)
+  (if (< n 3)
+    n
+    (+
+      (recursive (- n 1))
+      (* 2 (recursive (- n 2)))
+      (* 3 (recursive (- n 3))))))
+
+(assert -31 (recursive -31))
+(assert 2 (recursive 2))
+(assert 4 (recursive 3))
+(assert 11 (recursive 4))
+(assert 338870 (recursive 16))
+
+(define (iterative count)
+  (define (iter prev prev-1 prev-2 current)
+    (define (get-sum) (+ prev (* 2 prev-1) (* 3 prev-2)))
+    (cond
+      ((< count 3) count)
+      ((= current count) prev)
+      (else (iter (get-sum) prev prev-1 (+ current 1)))))
+  (iter 2 1 0 2))
+
+(define (rec-vs-iter n) (assert (recursive n) (iterative n)))
+(rec-vs-iter -31)
+(rec-vs-iter 2)
+(rec-vs-iter 3)
+(rec-vs-iter 4)
+(rec-vs-iter 16)
