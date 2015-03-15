@@ -122,3 +122,21 @@
 (assert 8 (expt 2 3))
 (assert 100 (expt 10 2))
 (assert 1 (expt 2 0))
+
+;;; Excercise 1.17
+;;; Iterative multiplication via addition
+
+(define (multiply a b)
+  (define (half n) (/ n 2))
+  (define (double n) (+ n n))
+  (define (multiply-iter a b state)
+    (cond
+      ((= b 0) a)
+      ((even? b) (+ state (double (multiply-iter a (half b) state))))
+      (else (multiply-iter a (- b 1) a))))
+  (multiply-iter a b 0))
+
+(multiply 2 0)
+(multiply 2 1)
+(multiply 2 2)
+(multiply 3 7)
