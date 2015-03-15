@@ -115,7 +115,7 @@
   (define (expt-iter b n a)
     (cond
       ((= n 0) a)
-      ((even? n) (* b (expt-iter b (/ n 2) a)))
+      ((even? n) (expt-iter (* b b) (/ n 2) a))
       (else (expt-iter b (- n 1) (* a b)))))
   (expt-iter b n 1))
 
@@ -131,12 +131,12 @@
   (define (double n) (+ n n))
   (define (multiply-iter a b state)
     (cond
-      ((= b 0) a)
-      ((even? b) (+ state (double (multiply-iter a (half b) state))))
-      (else (multiply-iter a (- b 1) a))))
+      ((= b 0) state)
+      ((even? b) (multiply-iter a (half b) (+ b state)))
+      (else (multiply-iter a (- b 1) (+ a state)))))
   (multiply-iter a b 0))
 
-(multiply 2 0)
-(multiply 2 1)
-(multiply 2 2)
-(multiply 3 7)
+(assert 0 (multiply 2 0))
+(assert 2 (multiply 2 1))
+(assert 4 (multiply 2 2))
+(assert 21 (multiply 3 7))
