@@ -104,3 +104,21 @@
 (assert 1 (pascal 1 1))
 (assert 2 (pascal 2 1))
 (assert 6 (pascal 4 2))
+
+;;; Excercise 1.16
+;;; Design a procedure that evolves an iterative exponentiation process that uses successive squaring and uses a logarithmic number of steps, as does fast-expt
+
+(define (even? n)
+  (= (remainder n 2) 0))
+
+(define (expt b n)
+  (define (expt-iter b n a)
+    (cond
+      ((= n 0) a)
+      ((even? n) (* b (expt-iter b (/ n 2) a)))
+      (else (expt-iter b (- n 1) (* a b)))))
+  (expt-iter b n 1))
+
+(assert 8 (expt 2 3))
+(assert 100 (expt 10 2))
+(assert 1 (expt 2 0))
